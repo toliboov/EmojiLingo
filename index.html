@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-   <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "zdc0tt80ms");
-</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>EmojiLingo: учи языки, играя</title>
@@ -642,6 +635,39 @@ applyTh();land();
 if(location.hash=="#admin"){P.adm=1;save();A.go("adm")}
 try{fetch("content.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(j=>{if(!j)return;RCF=j;applyCfg(j);applyCfg(CF);if(V=="land")land();else if(V=="home")home()}).catch(()=>{})}catch(e){}
 try{claude.use("user").then(u=>u&&u.me()).then(m=>{if(m&&!P.nm){P.nm=(m.name||"").split(" ")[0];save()}}).catch(()=>{})}catch(e){}
+<script type="module">
+  import { initializeApp } from "https://gstatic.com";
+  import { getAnalytics } from "https://gstatic.com";
+  import { getDatabase, ref, push, set, onDisconnect, serverTimestamp, increment, update } from "https://gstatic.com";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyByMIc_rQRSroFpWg0q2mkiBIEbiSdZmoA",
+    authDomain: "://firebaseapp.com",
+    databaseURL: "https://firebaseio.com",
+    projectId: "emojilingo-f6b09",
+    storageBucket: "emojilingo-f6b09.firebasestorage.app",
+    messagingSenderId: "755269481114",
+    appId: "1:755269481114:web:eb101113dfc0dc635ba523",
+    measurementId: "G-PXL8NC26DJ"
+  };
+ const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getDatabase(app);
+ // Счетчик заходов
+  update(ref(db, 'stats'), {
+    totalVisits: increment(1)
+  });
+// Отслеживание онлайна и времени сессии
+  const sessionRef = push(ref(db, 'sessions'));
+  set(sessionRef, {
+    online: true,
+    startTime: serverTimestamp(),
+    device: /Mobi|Android/i.test(navigator.userAgent) ? "Телефон" : "Компьютер"
+  });
+   onDisconnect(sessionRef).update({
+    online: false,
+    endTime: serverTimestamp()
+  });
 </script>
 </body>
 </html>
