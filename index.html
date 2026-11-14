@@ -636,5 +636,67 @@ if(location.hash=="#admin"){P.adm=1;save();A.go("adm")}
 try{fetch("content.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(j=>{if(!j)return;RCF=j;applyCfg(j);applyCfg(CF);if(V=="land")land();else if(V=="home")home()}).catch(()=>{})}catch(e){}
 try{claude.use("user").then(u=>u&&u.me()).then(m=>{if(m&&!P.nm){P.nm=(m.name||"").split(" ")[0];save()}}).catch(()=>{})}catch(e){}
 </script>
+<style id="emojilingo-animations">
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(18px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  main > *, section, .card, [class*="card"], [class*="btn"], button {
+    animation: fadeSlideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+  button, a[role="button"], [class*="btn"] {
+    transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, filter 0.2s ease !important;
+    cursor: pointer;
+  }
+  button:hover, [class*="btn"]:hover {
+    transform: translateY(-2px) scale(1.02);
+    filter: brightness(1.06);
+  }
+  button:active, [class*="btn"]:active {
+    transform: translateY(2px) scale(0.95) !important;
+  }
+  @keyframes mascotWiggle {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-6deg) scale(1.06); }
+    75% { transform: rotate(6deg) scale(1.06); }
+  }
+  h1 span, [class*="mascot"], [class*="fox"] {
+    display: inline-block;
+    animation: mascotWiggle 3s ease-in-out infinite;
+  }
+  .emoji-sparkle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 20px;
+    z-index: 9999;
+    user-select: none;
+    animation: sparkleFly 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes sparkleFly {
+    0% { opacity: 1; transform: translate(0, 0) scale(0.6) rotate(0deg); }
+    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.25) rotate(180deg); }
+  }
+</style>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('button, [class*="btn"]');
+    if (!btn) return;
+    const icons = ['✨', '⭐', '🎉', '💫', '🔥'];
+    for (let i = 0; i < 6; i++) {
+      const spark = document.createElement('span');
+      spark.className = 'emoji-sparkle';
+      spark.textContent = icons[Math.floor(Math.random() * icons.length)];
+      spark.style.left = e.clientX + 'px';
+      spark.style.top = e.clientY + 'px';
+      const angle = (Math.PI * 2 * i) / 6 + (Math.random() - 0.5);
+      const dist = 35 + Math.random() * 45;
+      spark.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+      spark.style.setProperty('--ty', (Math.sin(angle) * dist - 20) + 'px');
+      document.body.appendChild(spark);
+      setTimeout(() => spark.remove(), 850);
+    }
+  });
+</script>
 </body>
 </html>
